@@ -1,67 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Flower2, HandHeart, Coffee, Cookie, Sun, Copy, Check } from 'lucide-react';
+import { useState, useEffect } from "react"
+import {
+  Heart,
+  Flower2,
+  HandHeart,
+  Coffee,
+  Cookie,
+  Sun,
+  Copy,
+  Check,
+} from "lucide-react"
 
 function App() {
-  const [inputMessage, setInputMessage] = useState('');
-  const [outputMessage, setOutputMessage] = useState('');
-  const [displayMessage, setDisplayMessage] = useState('');
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [inputMessage, setInputMessage] = useState("")
+  const [outputMessage, setOutputMessage] = useState("")
+  const [displayMessage, setDisplayMessage] = useState("")
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const updateDisplayMessage = async () => {
       if (outputMessage !== displayMessage) {
-        setIsTransitioning(true);
-        await new Promise(resolve => setTimeout(resolve, 300)); // Wait for fade out
-        setDisplayMessage(outputMessage);
-        setIsTransitioning(false);
+        setIsTransitioning(true)
+        await new Promise((resolve) => setTimeout(resolve, 300)) // Wait for fade out
+        setDisplayMessage(outputMessage)
+        setIsTransitioning(false)
       }
-    };
+    }
 
-    updateDisplayMessage();
-  }, [outputMessage, displayMessage]);
+    updateDisplayMessage()
+  }, [outputMessage, displayMessage])
 
   const transformMessage = (message: string) => {
-    if (!message.trim()) return;
+    if (!message.trim()) return
 
-    const endearments = ['meu netinho(a) amado(a)', 'meu amor', 'anjinho(a) da vovó', 'tesouro'];
+    const endearments = [
+      "meu netinho(a) amado(a)",
+      "meu amor",
+      "anjinho(a) da vovó",
+      "tesouro",
+    ]
     const blessings = [
-      'Deus te abençoe sempre!! 🙏✨',
-      'Que Nossa Senhora te proteja!! 🙏👼',
-      'Fique com Deus!! 🙏💫',
-    ];
+      "Deus te abençoe sempre!! 🙏✨",
+      "Que Nossa Senhora te proteja!! 🙏👼",
+      "Fique com Deus!! 🙏💫",
+    ]
     const concerns = [
-      'Já comeu hoje?? 🍲',
-      'Tá se alimentando direito?? 😊',
-      'Não esquece de tomar água!! 💧',
-    ];
-    const emojis = ['❤️', '🌺', '🙏', '✨', '💖', '👵', '😘'];
+      "Já comeu hoje?? 🍲",
+      "Tá se alimentando direito?? 😊",
+      "Não esquece de tomar água!! 💧",
+    ]
+    const emojis = ["❤️", "🌺", "🙏", "✨", "💖", "👵", "😘"]
 
-    let transformed = `${endearments[Math.floor(Math.random() * endearments.length)]}, `;
+    let transformed = `${endearments[Math.floor(Math.random() * endearments.length)]}, `
     transformed += message
-      .replace(/o/g, 'oo')
-      .replace(/!+/g, '!!!!')
-      .replace(/\?+/g, '????')
-      .toUpperCase();
-    transformed += '\n\n' + concerns[Math.floor(Math.random() * concerns.length)];
-    transformed += '\n\n' + blessings[Math.floor(Math.random() * blessings.length)];
-    transformed += '\n\n' + Array(3)
-      .fill(null)
-      .map(() => emojis[Math.floor(Math.random() * emojis.length)])
-      .join(' ');
+      .replace(/o/g, "oo")
+      .replace(/!+/g, "!!!!")
+      .replace(/\?+/g, "????")
+      .toUpperCase()
+    transformed +=
+      "\n\n" + concerns[Math.floor(Math.random() * concerns.length)]
+    transformed +=
+      "\n\n" + blessings[Math.floor(Math.random() * blessings.length)]
+    transformed +=
+      "\n\n" +
+      Array(3)
+        .fill(null)
+        .map(() => emojis[Math.floor(Math.random() * emojis.length)])
+        .join(" ")
 
-    setOutputMessage(transformed);
-  };
+    setOutputMessage(transformed)
+  }
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(outputMessage);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(outputMessage)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-[#FFF5F5] relative overflow-hidden pb-32">
@@ -96,7 +114,8 @@ function App() {
               Mensagem de Vó
             </h1>
             <p className="text-gray-600 text-lg">
-              Transforme sua mensagem no jeito carinhoso que só a vovó sabe escrever!
+              Transforme sua mensagem no jeito carinhoso que só a vovó sabe
+              escrever!
             </p>
           </div>
 
@@ -110,15 +129,17 @@ function App() {
                 <button
                   onClick={copyToClipboard}
                   className={`absolute top-2 right-2 p-2 rounded-full transition-all duration-200 ${
-                    copied 
-                      ? 'bg-green-100 text-green-600' 
-                      : 'bg-pink-100 text-pink-600 hover:bg-pink-200'
+                    copied
+                      ? "bg-green-100 text-green-600"
+                      : "bg-pink-100 text-pink-600 hover:bg-pink-200"
                   }`}
                   title="Copiar mensagem"
                 >
                   {copied ? <Check size={20} /> : <Copy size={20} />}
                 </button>
-                <p className={`text-gray-700 text-lg whitespace-pre-wrap pr-10 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <p
+                  className={`text-gray-700 text-lg whitespace-pre-wrap pr-10 transition-opacity duration-300 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+                >
                   {displayMessage}
                 </p>
               </div>
@@ -149,7 +170,7 @@ function App() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
